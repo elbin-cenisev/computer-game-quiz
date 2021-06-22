@@ -1,0 +1,8 @@
+#questionSec {
+    /* questions are hidden until the startButton is clicked */
+    display: none; 
+}
+
+#questionSec ul {
+    list-style-type: none;
+}
