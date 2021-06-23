@@ -95,6 +95,9 @@ function showQuestion(index) {
     console.log(currentQuestion.question);
     $('#questionTitle').text(currentQuestion.question);
 
+    // Clear answer list before displaying new answers
+    $('#ansList').empty();
+
     // For every possible answer, create a button
     currentQuestion.answers.forEach(element => {
         let $newli = $('<li><button class="answerBtn">' + element + '</button></li>');
@@ -102,9 +105,21 @@ function showQuestion(index) {
     });
 }
 
+function updateIndicator(correct) {
+    let message;
+    if(correct) {
+        message = 'Correct'
+    }
+    else {
+        message = 'Incorrect'
+    }
+    $('#indicator').text(message);
+}
+
 $('#startBtn').click(function(event) {
     startQuiz();
 });
+
 // Give every answerButton an event listener
 // Note: answerButtons are dynamically created in showQuestion() based on number of answers
 $('#ansList').on('click', 'li', function() {
