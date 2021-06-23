@@ -2,7 +2,16 @@
 let questionList = initializeQuestions();
 
 // Tracks the current question the user is on. Increments when answerButton is clicked. Resets on start.
-let questionTracker;
+let questionTracker = 0;
+
+// Tracks the amount of time left on the quiz. Mostly handled by startTimer().
+let timeTracker = 0;
+
+function hideScreens() {
+    $('#startSec').hide();
+    $('#questionSec').hide();
+    $('#endSec').hide();
+}
 
 function initializeQuestions() {
     // create the question list
@@ -71,21 +80,12 @@ function initializeQuestions() {
     return questions;
 }
 
-function startQuiz() {
-    // Hide start section
-    $('#startSec').hide();
+// Called when all questions are answered or time runs out
+function endQuiz() {
+    // Only show end screen
+    hideScreens();
+    $('#endSec').show();
 
-    // Display questions section
-    $('questionSec').show();
-
-    // Reset questionTracker
-    questionTracker = 0;
-
-    // Display the first question
-    showQuestion(questionTracker);
-
-    // Start the score timer
-    // startTimer();
 }
 
 function showQuestion(index) {
@@ -116,12 +116,25 @@ function updateIndicator(correct) {
     $('#indicator').text(message);
 }
 
+// Handler for Start Quiz button on the start screen
 $('#startBtn').click(function(event) {
-    startQuiz();
+    // Only show question screen
+    hideScreens();
+    $('#questionSec').show();
+
+    // Reset trackers
+    questionTracker = 0;
+    secondsTracker = 75;
+
+    // Display the first question
+    showQuestion(questionTracker);
+
+    // Start the score timer
+    // startTimer();
 });
 
-// Give every answerButton an event listener
-// Note: answerButtons are dynamically created in showQuestion() based on number of answers
+// Handler for all answer buttons in the question screen
+// Note: answer buttons are dynamically created in showQuestion() based on number of answers
 $('#ansList').on('click', 'li', function() {
 
     // Check if the correct answer was selected
@@ -135,5 +148,11 @@ $('#ansList').on('click', 'li', function() {
 
     // Move to the next question
     questionTracker++;
-    showQuestion(questionTracker);
+
+    if(questionTracker === questionList.length) {
+        endQuiz();
+    }
+    else {
+        showQuestion(questionTracker);
+    }
 })

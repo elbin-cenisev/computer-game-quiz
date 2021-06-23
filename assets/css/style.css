@@ -1,6 +1,13 @@
+#startSec {
+    display: block;
+}
+
 #questionSec {
-    /* questions are hidden until the startButton is clicked */
-    /* display: none;  */
+    display: none;
+}
+
+#endSec {
+    display: none;
 }
 
 #questionSec ul {
