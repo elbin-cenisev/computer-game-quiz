@@ -83,6 +83,23 @@ function initializeQuestions() {
     return questions;
 }
 
+// Called when quiz starts. Also checks for timeout.
+function startTimer() {
+    timeTracker = 30;
+    timer.textContent = timeTracker;
+    var timerInterval = setInterval(function() {
+        timeTracker--;
+        timer.textContent = timeTracker;
+        // Don't go below 0
+        if(timeTracker <= 0 || questionTracker === questionList.length) {
+            clearInterval(timerInterval);
+            endQuiz();
+        }
+    }, 1000);
+    // When it goes to 0, end the quiz
+    // When wrong answer is picked, lose seconds
+}
+
 // Called when all questions are answered or time runs out
 function endQuiz() {
     // Only show end screen
@@ -127,7 +144,7 @@ $('#startBtn').click(function(event) {
     secondsTracker = 75;
 
     // Start the score timer
-    // startTimer();
+    startTimer();
 
     // Display the first question
     showQuestion(questionTracker);
@@ -143,7 +160,7 @@ $('#ansList').on('click', 'li', function() {
     }
     else{
         updateIndicator(false);
-        secondsTracker -= 15;   // Penalize for wrong answer
+        timeTracker -= 5;   // Penalize for wrong answer
     }
 
     // Move to the next question
