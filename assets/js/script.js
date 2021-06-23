@@ -7,10 +7,13 @@ let questionTracker = 0;
 // Tracks the amount of time left on the quiz. Mostly handled by startTimer().
 let timeTracker = 0;
 
-function hideScreens() {
+// Called when switching between screens 
+function showScreen(screen) {
     $('#startSec').hide();
     $('#questionSec').hide();
     $('#endSec').hide();
+
+    screen.show();
 }
 
 function initializeQuestions() {
@@ -83,9 +86,7 @@ function initializeQuestions() {
 // Called when all questions are answered or time runs out
 function endQuiz() {
     // Only show end screen
-    hideScreens();
-    $('#endSec').show();
-
+    showScreen($('#endSec'));
 }
 
 function showQuestion(index) {
@@ -119,18 +120,17 @@ function updateIndicator(correct) {
 // Handler for Start Quiz button on the start screen
 $('#startBtn').click(function(event) {
     // Only show question screen
-    hideScreens();
-    $('#questionSec').show();
+    showScreen($('#questionSec'));
 
     // Reset trackers
     questionTracker = 0;
     secondsTracker = 75;
 
-    // Display the first question
-    showQuestion(questionTracker);
-
     // Start the score timer
     // startTimer();
+
+    // Display the first question
+    showQuestion(questionTracker);
 });
 
 // Handler for all answer buttons in the question screen
