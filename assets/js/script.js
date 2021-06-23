@@ -156,3 +156,7 @@ $('#ansList').on('click', 'li', function() {
         showQuestion(questionTracker);
     }
 })
+
+$('#retryBtn').click(function(event) {
+    showScreen($('#startSec'));
+})
