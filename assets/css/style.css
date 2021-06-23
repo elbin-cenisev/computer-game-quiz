@@ -8,6 +8,10 @@ header {
    justify-content: space-between;
 }
 
+#timer {
+    color: red;
+}
+
 section {
     margin: auto;
     width: 50%;

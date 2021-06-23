@@ -92,7 +92,7 @@ function showScreen(screen) {
 // Called when quiz starts, but runs in parallel to entire quiz, not just at start.
 function startTimer() {
     timeTracker = 30;
-    timer.textContent = timeTracker;
+    $('#timer').text(timeTracker);
     var timerInterval = setInterval(function() {
         timer.textContent = timeTracker;
         // Don't go below 0
