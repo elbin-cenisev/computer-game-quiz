@@ -1,4 +1,4 @@
-// Get the list of questions and randomize the order of questions
+// Get the list of questions
 let questionList = initializeQuestions();
 
 // Tracks the current question the user is on. Increments when answerButton is clicked. Resets on start.
@@ -63,16 +63,21 @@ function initializeQuestions() {
         },
     ];
 
+    return questions;
+}
+
+// Called each time the quiz starts
+function randomizeQuestions(questionList) {
     // Randomize order of questions using the "Durstenfeld shuffle"
     // Source: https://bit.ly/3wPCw4W
-    for (var i = questions.length - 1; i > 0; i--) {
+    for (var i = questionList.length - 1; i > 0; i--) {
         var j = Math.floor(Math.random() * (i + 1));
-        var temp = questions[i];
-        questions[i] = questions[j];
-        questions[j] = temp;
+        var temp = questionList[i];
+        questionList[i] = questionList[j];
+        questionList[j] = temp;
     }
 
-    return questions;
+    return questionList;
 }
 
 // Called when switching between screens 
@@ -113,7 +118,6 @@ function showQuestion(index) {
     let currentQuestion = questionList[index];
 
     // Display the question
-    console.log(currentQuestion.question);
     $('#questionTitle').text(currentQuestion.question);
 
     // Clear answer list before displaying new answers
@@ -159,6 +163,9 @@ function displayHighscores() {
 
 // Handler for Start Quiz button on the start screen
 $('#startBtn').click(function(event) {
+    // randomize the order of the questions
+    randomizeQuestions(questionList);
+
     // Only show question screen
     showScreen($('#questionSec'));
 
