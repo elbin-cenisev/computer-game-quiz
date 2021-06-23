@@ -105,3 +105,20 @@ function showQuestion(index) {
 $('#startBtn').click(function(event) {
     startQuiz();
 });
+// Give every answerButton an event listener
+// Note: answerButtons are dynamically created in showQuestion() based on number of answers
+$('#ansList').on('click', 'li', function() {
+
+    // Check if the correct answer was selected
+    if($(this).text() === questionList[questionTracker].correct) {
+        updateIndicator(true);
+    }
+    else{
+        updateIndicator(false);
+        secondsTracker -= 15;   // Penalize for wrong answer
+    }
+
+    // Move to the next question
+    questionTracker++;
+    showQuestion(questionTracker);
+})
