@@ -94,16 +94,19 @@ function startTimer() {
     timeTracker = 30;
     timer.textContent = timeTracker;
     var timerInterval = setInterval(function() {
-        timeTracker--;
         timer.textContent = timeTracker;
         // Don't go below 0
-        if(timeTracker <= 0 || questionTracker === questionList.length) {
+        if(timeTracker <= 0) {
+            clearInterval(timerInterval);
+            timeTracker = 0;
+            endQuiz(); 
+        }
+        else if (questionTracker === questionList.length) {
             clearInterval(timerInterval);
             endQuiz();
         }
+        else { timeTracker--; }
     }, 1000);
-    // When it goes to 0, end the quiz
-    // When wrong answer is picked, lose seconds
 }
 
 // Called when all questions are answered or time runs out
@@ -111,6 +114,8 @@ function endQuiz() {
     // Only show end screen
     $('header').show();
     showScreen($('#endSec'));
+
+    $('#score').text(timeTracker);
 }
 
 // Called each time a new question needs to be displayed on question screen.
@@ -132,14 +137,20 @@ function showQuestion(index) {
 
 // Called when answer button is clicked. Informs whether choice is correct.
 function updateIndicator(correct) {
-    let message;
+    let message;    // This will hold 'correct' or 'incorrect'
     if(correct) {
         message = 'Correct'
+        $('#indicator').css('color', 'green');
+
     }
     else {
         message = 'Incorrect'
+        $('#indicator').css('color', 'red');
     }
+
     $('#indicator').text(message);
+    $('#indicator').fadeIn();
+    $('#indicator').fadeOut();
 }
 
 // Called when View Highscores button is clicked. Shows local storage list of scores.
@@ -155,6 +166,11 @@ function displayHighscores() {
     while(i--) {
         values.push(JSON.parse(localStorage.getItem(keys[i])))
     }
+
+    // Sort from highest score to lowest
+    values.sort((a, b) => (a.score > b.score) ? -1 : 1)
+
+    console.log(values);
     for(var i = 0; i < values.length; i++) {
         // Creates <li> for each entry in localstorage
         $('#highscoreList').append("<li class='score'>" + values[i].initials + " - " + values[i].score + "</li>")
@@ -221,14 +237,20 @@ $('#viewHighscore').click(function(event) {
 
 // Handles submit button on end screen. Saves score for highscoreList.
 $('#submitBtn').click(function(event) {
-    // save timeTracker as score in an object
-    var user = {
-        initials: initials.value,
+    if(!$('#initials').val()) {
+        event.preventDefault();
+        alert("You cannot leave the initials field empty")
+    }
+    else {
+        // save timeTracker as score in an object
+        var user = {
+        initials: $('#initials').val(),
         score: timeTracker
-    };
+        };
 
-    // put the object in localStorage, use input as key
-    localStorage.setItem(JSON.stringify(initials.value), JSON.stringify(user));
+        // put the object in localStorage, use input as key
+        localStorage.setItem(JSON.stringify(initials.value), JSON.stringify(user));
+    }
 })
 
 // Handles clear button on highscore screen. Removes everything from local storage
