@@ -7,15 +7,7 @@ let questionTracker = 0;
 // Tracks the amount of time left on the quiz. Mostly handled by startTimer().
 let timeTracker = 0;
 
-// Called when switching between screens 
-function showScreen(screen) {
-    $('#startSec').hide();
-    $('#questionSec').hide();
-    $('#endSec').hide();
-
-    screen.show();
-}
-
+// Returns the hardcoded list of questions, but randomizes order
 function initializeQuestions() {
     // create the question list
     let questions = [
@@ -83,7 +75,16 @@ function initializeQuestions() {
     return questions;
 }
 
-// Called when quiz starts. Also checks for timeout.
+// Called when switching between screens 
+function showScreen(screen) {
+    $('#startSec').hide();
+    $('#questionSec').hide();
+    $('#endSec').hide();
+    $('#highscoreSec').hide();
+
+    screen.show();
+}
+// Called when quiz starts, but runs in parallel to entire quiz, not just at start.
 function startTimer() {
     timeTracker = 30;
     timer.textContent = timeTracker;
@@ -103,9 +104,11 @@ function startTimer() {
 // Called when all questions are answered or time runs out
 function endQuiz() {
     // Only show end screen
+    $('header').show();
     showScreen($('#endSec'));
 }
 
+// Called each time a new question needs to be displayed on question screen.
 function showQuestion(index) {
     let currentQuestion = questionList[index];
 
@@ -123,6 +126,7 @@ function showQuestion(index) {
     });
 }
 
+// Called when answer button is clicked. Informs whether choice is correct.
 function updateIndicator(correct) {
     let message;
     if(correct) {
@@ -134,6 +138,25 @@ function updateIndicator(correct) {
     $('#indicator').text(message);
 }
 
+// Called when View Highscores button is clicked. Shows local storage list of scores.
+function displayHighscores() {
+    // Clear highscores (otherwise you append to existing ol)
+    $('#highscoreList').empty();
+
+    // Prebaked algorithm for taking everything out of local storage
+    var values = [],
+    keys = Object.keys(localStorage),
+    i = keys.length;
+
+    while(i--) {
+        values.push(JSON.parse(localStorage.getItem(keys[i])))
+    }
+    for(var i = 0; i < values.length; i++) {
+        // Creates <li> for each entry in localstorage
+        $('#highscoreList').append("<li class='score'>" + values[i].initials + " - " + values[i].score + "</li>")
+    }
+}
+
 // Handler for Start Quiz button on the start screen
 $('#startBtn').click(function(event) {
     // Only show question screen
@@ -141,7 +164,7 @@ $('#startBtn').click(function(event) {
 
     // Reset trackers
     questionTracker = 0;
-    secondsTracker = 75;
+    secondsTracker = 30;
 
     // Start the score timer
     startTimer();
@@ -174,6 +197,35 @@ $('#ansList').on('click', 'li', function() {
     }
 })
 
-$('#retryBtn').click(function(event) {
+// Handles Try Again button on end screen and Go Back on highscore screen. Sends user back to start.
+$('.backBtn').on('click', function() {
+    // Show the start screen
+    $('header').show();
     showScreen($('#startSec'));
+})
+
+// Handles View Highscore list on most screens. Directs to highscoreList.
+$('#viewHighscore').click(function(event) {
+    // Show the highscore screen and load scores
+    $('header').hide();
+    showScreen($('#highscoreSec'));
+    displayHighscores();
+})
+
+// Handles submit button on end screen. Saves score for highscoreList.
+$('#submitBtn').click(function(event) {
+    // save timeTracker as score in an object
+    var user = {
+        initials: initials.value,
+        score: timeTracker
+    };
+
+    // put the object in localStorage, use input as key
+    localStorage.setItem(JSON.stringify(initials.value), JSON.stringify(user));
+})
+
+// Handles clear button on highscore screen. Removes everything from local storage
+$('#clearBtn').click(function(event) {
+    $('#highscoreList').empty();
+    localStorage.clear();
 })
