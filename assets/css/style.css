@@ -1,6 +1,6 @@
 #questionSec {
     /* questions are hidden until the startButton is clicked */
-    display: none; 
+    /* display: none;  */
 }
 
 #questionSec ul {
