@@ -111,10 +111,10 @@ function startTimer() {
 
 // Called when all questions are answered or time runs out
 function endQuiz() {
-    // Only show end screen
+    // Only show end screen and re-display viewHighScore button
     $('header').show();
     showScreen($('#endSec'));
-
+    $('#viewHighscore').show();
     $('#score').text(timeTracker);
 }
 
@@ -182,8 +182,9 @@ $('#startBtn').click(function(event) {
     // randomize the order of the questions
     randomizeQuestions(questionList);
 
-    // Only show question screen
+    // Only show question screen and remove View Highscore button
     showScreen($('#questionSec'));
+    $('#viewHighscore').hide();
 
     // Reset trackers
     questionTracker = 0;
