@@ -8,6 +8,9 @@ This assignment tasked me with creating a quiz from scratch primarily using java
 The quiz needs to be timed and assign a score to the user. It must then store the user's score as a key-value pair in local storage
 in order to be parsed and displayed in a highscore list.
 
+# Technologies Used
+Done with HTML5, CSS3, Javascript 1.8.5
+
 ## Link to the Deployed Website
 https://elbin-cenisev.github.io/computer-game-quiz/
 
