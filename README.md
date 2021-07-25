@@ -20,5 +20,6 @@ https://elbin-cenisev.github.io/computer-game-quiz/
 ![Screenshot from 2021-06-24 13-40-20](https://user-images.githubusercontent.com/75343776/123310434-1129e880-d4f4-11eb-8755-ff91ffcb9821.png)
 ![Screenshot from 2021-06-24 13-39-02](https://user-images.githubusercontent.com/75343776/123310446-138c4280-d4f4-11eb-9756-e969f17fdf64.png)
 
-
+## License
+MIT License
 
